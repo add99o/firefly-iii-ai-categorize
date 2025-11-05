@@ -1,12 +1,8 @@
-# Firefly III AI categorization
+# Firefly III AI categorization (Updated)
 
-This project allows you to automatically categorize your expenses in [Firefly III](https://www.firefly-iii.org/) by
-using OpenAI.
+This is a fork of the original [firefly-iii-ai-categorize](https://github.com/bahuma20/firefly-iii-ai-categorize) project by [bahuma20](https://github.com/bahuma20).
 
-## Please fork me
-Unfortunately i am not able to invest more time into maintaining this project. 
-
-Feel free to fork it and create a PR that adds a link to your fork in the README file.
+This version has been updated to use the latest OpenAI API and includes other improvements.
 
 ## How it works
 
@@ -21,6 +17,8 @@ If it is one of your existing categories, the tool will set the category on the 
 transaction.
 
 If it cannot detect the category, it will not update anything.
+
+A new check has been added to ensure that transactions that already have a category are ignored.
 
 ## Privacy
 
@@ -75,7 +73,7 @@ version: '3.3'
 
 services:
   categorizer:
-    image: ghcr.io/bahuma20/firefly-iii-ai-categorize:latest
+    image: ghcr.io/add99o/firefly-iii-ai-categorize:latest
     restart: always
     ports:
       - "3000:3000"
@@ -102,7 +100,8 @@ docker run -d \
 -e FIREFLY_URL=https://firefly.example.com \
 -e FIREFLY_PERSONAL_TOKEN=eyabc123... \
 -e OPENAI_API_KEY=sk-abc123... \
-ghcr.io/bahuma20/firefly-iii-ai-categorize:latest
+-e OPENAI_MODEL=gpt-5-nano \
+ghcr.io/add99o/firefly-iii-ai-categorize:latest
 ```
 
 ### 4. Set up the webhook
@@ -147,6 +146,10 @@ You can configure the name of this tag by setting the environment variable `FIRE
 ## Running on a different port
 
 If you have to run the application on a different port than the default port `3000` set the environment variable `PORT`.
+
+## Forked by
+
+This fork is maintained by [Adnan](https://github.com/add99o).
 
 ## Full list of environment variables
 

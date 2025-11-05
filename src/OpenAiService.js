@@ -1,30 +1,28 @@
-import {Configuration, OpenAIApi} from "openai";
+import OpenAI from "openai";
 import {getConfigVariable} from "./util.js";
 
 export default class OpenAiService {
     #openAi;
-    #model = "gpt-3.5-turbo-instruct";
+    #model = "gpt-5-nano";
 
     constructor() {
         const apiKey = getConfigVariable("OPENAI_API_KEY")
 
-        const configuration = new Configuration({
+        this.#openAi = new OpenAI({
             apiKey
         });
-
-        this.#openAi = new OpenAIApi(configuration)
     }
 
     async classify(categories, destinationName, description) {
         try {
             const prompt = this.#generatePrompt(categories, destinationName, description);
 
-            const response = await this.#openAi.createCompletion({
+            const response = await this.#openAi.responses.create({
                 model: this.#model,
-                prompt
+                input: prompt
             });
 
-            let guess = response.data.choices[0].text;
+            let guess = response.output_text;
             guess = guess.replace("\n", "");
             guess = guess.trim();
 
@@ -37,7 +35,7 @@ export default class OpenAiService {
 
             return {
                 prompt,
-                response: response.data.choices[0].text,
+                response: response.output_text,
                 category: guess
             };
 
